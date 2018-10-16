@@ -132,30 +132,42 @@ def TSP(city_mat):
 	
     tsprec(city_mat,curr_bound, 0, 1,curr_path);
 
-    print("DISTANCE COVERED : %f\n"% final_res)
-    print("Path Taken : ")
-    for i in range(6) :
-        print("%d "% final_path[i])
+    
+    result_visualization(final_path,city,final_res)
     
 
 
 
-final_path=[float("inf"),float("inf"),float("inf"),float("inf"),float("inf"),float("inf")]
-visited=[0,0,0,0,0]
-final_res=float("inf")
+
 #calculation algorithm ends--------------------------------------------------------------------------------------------------------------
 
 
  
+def result_visualization(path,city,final_res):
+    top=Tk()
+    j=0
+    for i in range(6):
+        if(i==5):
+            l[i]=Label(top,text=str(city[path[j]-1]))
+            l[i].grid(row=7,column=8+i)
+        else:
+            l[i]=Label(top,text=str(city[path[j]-1])+"-------->")
+            l[i].grid(row=7,column=8+i)
+        j=j+1
 
+    l1=Label(top,text="Total distance of the path = "+ str(final_res))
+    l1.grid(row=9)
+    top.mainloop()
 
     
 
-  
+final_path=[float("inf"),float("inf"),float("inf"),float("inf"),float("inf"),float("inf")]
+visited=[0,0,0,0,0]
+final_res=float("inf")  
 
         
 city=[]
-l=list( i for i in range(5))
+l=list( i for i in range(6))
 c=list( i for i in range(5))
 city_mat=[]
 e=list( i for i in range(25))
