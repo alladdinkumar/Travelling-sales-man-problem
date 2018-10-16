@@ -132,7 +132,7 @@ def TSP(city_mat):
 	
     tsprec(city_mat,curr_bound, 0, 1,curr_path);
 
-    print("Minimum cost : %f\n"% final_res)
+    print("DISTANCE COVERED : %f\n"% final_res)
     print("Path Taken : ")
     for i in range(6) :
         print("%d "% final_path[i])
