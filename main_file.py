@@ -1,8 +1,21 @@
 from tkinter import *
 import sqlite3
 
-def database_entry():
-    print("New datbase entry")
+def database_entry(path,city,dist):
+    fin_path=str(city[path[0]-1])+","+str(city[path[1]-1])+"," +str(city[path[2]-1])+"," +str(city[path[3]-1])+"," +str(city[path[4]-1])        
+    conn=sqlite3.connect("result.db")
+    c=conn.cursor()
+    try:
+        c.execute("Insert into result values(?,?)",(fin_path,dist))
+    except:
+        c.execute("create table result (path text, diatance real)")
+        c.execute("Insert into result values(?,?)",(fin_path,dist))
+    c.execute("select * from result")
+    s=c.fetchall()
+    conn.commit()
+    conn.close()
+    result_visualization(path,city,final_res)
+
 def matrix_entry():
     top=Tk()
     
@@ -31,10 +44,32 @@ def city_entry():
     b=Button(top,text="calculate",command=copy_city_to_local)
     b.grid(row=5)
     top.mainloop()
+def search_in_database(city):
+    final_res=0
+    found=0
+    conn=sqlite3.connect("result.db")
+    c=conn.cursor()
+    c.execute("select * from result")  
+    rows=c.fetchall()
+    for row in rows:
+        row=list(row)
+        city_lis=row[0].split(",")
+        if(city[0] in city_lis and city[1] in city_lis and city[2] in city_lis and city[3] in city_lis and city[4] in city_lis):
+            found=1
+            final_res=row[1]
+    
+    if(found==1):
+        result_visualization_from_db(city_lis,final_res)
+    else:
+        matrix_entry()
+        
+        
+    
+    
 def copy_city_to_local():
     for i in range(5):
         city.append(c[i].get())
-    matrix_entry()
+    search_in_database(city)
     
 def matrix_copy_to_local():
     k=0
@@ -132,8 +167,8 @@ def TSP(city_mat):
 	
     tsprec(city_mat,curr_bound, 0, 1,curr_path);
 
+    database_entry(final_path,city,final_res)
     
-    result_visualization(final_path,city,final_res)
     
 
 
@@ -158,7 +193,22 @@ def result_visualization(path,city,final_res):
     l1=Label(top,text="Total distance of the path = "+ str(final_res))
     l1.grid(row=9)
     top.mainloop()
+    
+def result_visualization_from_db(city_lis,final_res):
+    top=Tk()
+    j=0
+    for i in range(6):
+        if(i==5):
+            l[i]=Label(top,text=str(city_lis[0]))
+            l[i].grid(row=7,column=8+i)
+        else:
+            l[i]=Label(top,text=str(city_lis[j])+"-------->")
+            l[i].grid(row=7,column=8+i)
+        j=j+1
 
+    l1=Label(top,text="Total distance of the path = "+ str(final_res))
+    l1.grid(row=9)
+    top.mainloop()
     
 
 final_path=[float("inf"),float("inf"),float("inf"),float("inf"),float("inf"),float("inf")]
