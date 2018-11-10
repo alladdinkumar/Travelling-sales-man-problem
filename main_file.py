@@ -1,5 +1,18 @@
 from tkinter import *
 import sqlite3
+#global_variable-----------------------------------------------------------------------------------------------------------------------
+final_path=[float("inf"),float("inf"),float("inf"),float("inf"),float("inf"),float("inf")]
+visited=[0,0,0,0,0]
+final_res=float("inf")  
+
+        
+city=[]
+l=list( i for i in range(6))
+c=list( i for i in range(5))
+city_mat=[]
+e=list( i for i in range(25))
+
+#======================================================================================================================================
 
 def database_entry(path,city,dist):
     fin_path=str(city[path[0]-1])+","+str(city[path[1]-1])+"," +str(city[path[2]-1])+"," +str(city[path[3]-1])+"," +str(city[path[4]-1])        
@@ -17,8 +30,8 @@ def database_entry(path,city,dist):
     result_visualization(path,city,final_res)
 
 def matrix_entry():
-    top=Tk()
     
+    top=Tk()
     for i in range(5):
         l[i]=Label(top,text=city[i])
         l[i].grid(row=0,column=i+1)
@@ -69,6 +82,7 @@ def search_in_database(city):
 def copy_city_to_local():
     for i in range(5):
         city.append(c[i].get())
+    
     search_in_database(city)
     
 def matrix_copy_to_local():
@@ -210,19 +224,80 @@ def result_visualization_from_db(city_lis,final_res):
     l1.grid(row=9)
     top.mainloop()
     
+#login_module__________________________________________________________________________________________________________________________
 
-final_path=[float("inf"),float("inf"),float("inf"),float("inf"),float("inf"),float("inf")]
-visited=[0,0,0,0,0]
-final_res=float("inf")  
-
+root = Tk()
+root.title("Python: PROJECT")
+USERNAME = StringVar()
+PASSWORD = StringVar()
+ 
+Top = Frame(root, bd=2)
+Top.pack(side=TOP)
+Form = Frame(root)
+Form.pack(side=TOP)
+ 
+lbl_title = Label(Top, text = "LOGIN", font=(15))
+lbl_title.pack(fill=X)
+lbl_username = Label(Form, text = "Username:", font=(14), bd=15)
+lbl_username.grid(row=0, sticky="e")
+lbl_password = Label(Form, text = "Password:", font=(14), bd=15)
+lbl_password.grid(row=1, sticky="e")
+lbl_text = Label(Form)
+lbl_text.grid(row=2, columnspan=2)
+ 
+username = Entry(Form, textvariable=USERNAME, font=(14))
+username.grid(row=0, column=1)
+password = Entry(Form, textvariable=PASSWORD, show="*", font=(14))
+password.grid(row=1, column=1)
+def Database():
+    global conn, cursor
+    conn = sqlite3.connect("project.db")
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute("CREATE TABLE member (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
+    except:
+        cursor.execute("DROP TABLE member")
+        cursor.execute("CREATE TABLE member (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
         
-city=[]
-l=list( i for i in range(6))
-c=list( i for i in range(5))
-city_mat=[]
-e=list( i for i in range(25))
+    cursor.execute("SELECT * FROM member WHERE `username` = 'admin' AND `password` = 'admin'")
+    if cursor.fetchone() is None:
+        cursor.execute("INSERT INTO member (username, password) VALUES('admin', 'admin')")
+        conn.commit()
+def HomeWindow():
+    global Home
+    root.withdraw()
+    Home = Toplevel()
+    lbl_home = Label(Home, text="Successfully Login!", font=(20)).pack()
+    city_entry()
+    
+    
+def Login():
+    Database()
+    if USERNAME.get() == "" or PASSWORD.get() == "":
+        lbl_text.config(text="Please complete the required field!", fg="red")
+    else:
+        cursor.execute("SELECT * FROM member WHERE username = ? AND password = ?", (USERNAME.get(), PASSWORD.get()))
+        if cursor.fetchone() is not None:
+            HomeWindow()
+            USERNAME.set("")
+            PASSWORD.set("")
+            lbl_text.config(text="")
+        else:
+            lbl_text.config(text="Invalid username or password", fg="red")
+            USERNAME.set("")
+            PASSWORD.set("")   
+    cursor.close()
+    conn.close()
+btn_login = Button(Form, text="Login", width=45, command=Login)
+btn_login.grid(row=3, columnspan=2)
+btn_login.bind('<Return>', Login)
+if __name__ == '__main__':
+    root.mainloop()
+#login_module_ends------------------------------------------------------------------------------------------------------------------------------------
 
-city_entry()
+
+
  
 
     
