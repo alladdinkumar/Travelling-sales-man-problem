@@ -1,5 +1,6 @@
 from tkinter import *
 import sqlite3
+
 #global_variable-----------------------------------------------------------------------------------------------------------------------
 final_path=[float("inf"),float("inf"),float("inf"),float("inf"),float("inf"),float("inf")]
 visited=[0,0,0,0,0]
@@ -32,30 +33,55 @@ def database_entry(path,city,dist):
 def matrix_entry():
     
     top=Tk()
+    top.geometry("1400x700+0+0")
+    top.title("CITY MATRIX")
+    Top = Frame(top, bd=2)
+    Top.pack(side=TOP)
+    Form = Frame(top)
+    Form.pack(side=TOP)
+    lbl_title = Label(Top, text = "ENTER THE PATH DISTANCE BETWEEN THE CITIES", font=(15))
+    lbl_title.pack(fill=X)
     for i in range(5):
-        l[i]=Label(top,text=city[i])
+        l[i]=Label(Form,text=city[i], font=(15))
         l[i].grid(row=0,column=i+1)
     
     k=0
     for i in range(5):
-        l[i]=Label(top,text=city[i])
+        l[i]=Label(Form,text=city[i], font=(15))
         l[i].grid(row=i+1)
         for j in range(5):
-            e[k]=Entry(top,bd=5)
-            e[k].grid(row=i+1,column=j+1)
-            k+=1
-    b=Button(top,text="Enter",command=matrix_copy_to_local)
-    b.grid(row=6) 
+            if i==j:
+                e[k]=Entry(Form,bd=5,state='disabled')
+                e[k].grid(row=i+1,column=j+1)
+                k+=1
+            else:
+                e[k]=Entry(Form,bd=5)
+                e[k].grid(row=i+1,column=j+1)
+                k+=1
+    b=Button(Form,text="CALCULATE",command=matrix_copy_to_local, font=(15))
+    b.grid(row=6)
+    lbl_text = Label(Form)
+    lbl_text.grid(row=2, columnspan=2)
     top.mainloop()  
 def city_entry():
     top=Tk()
+    top.title("CITY ENTRY")
+    top.geometry("1400x700+0+0")
+    Top = Frame(top, bd=2)
+    Top.pack(side=TOP)
+    Form = Frame(top)
+    Form.pack(side=TOP)
+    lbl_title = Label(Top, text = "ENTER THE FIVE CITIES", font=(15))
+    lbl_title.pack(fill=X)
     for i in range(5):
-        l[i]=Label(top,text="City"+str(i+1))
-        l[i].grid(row=i,column=0)
-        c[i]=Entry(top,bd=5)
-        c[i].grid(row=i,column=1)
-    b=Button(top,text="calculate",command=copy_city_to_local)
-    b.grid(row=5)
+        l[i]=Label(Form,text="CITY"+str(i+1), font=(15))
+        l[i].grid(row=i,column=15)
+        c[i]=Entry(Form,bd=5)
+        c[i].grid(row=i,column=16)
+    b=Button(Form,text="SUBMIT",command=copy_city_to_local, font=(15))
+    b.grid(row=5,column=15)
+    lbl_text = Label(Form)
+    lbl_text.grid(row=2, columnspan=2)
     top.mainloop()
 def search_in_database(city):
     final_res=0
@@ -70,9 +96,10 @@ def search_in_database(city):
         if(city[0] in city_lis and city[1] in city_lis and city[2] in city_lis and city[3] in city_lis and city[4] in city_lis):
             found=1
             final_res=row[1]
+            fin_lis=city_lis
     
     if(found==1):
-        result_visualization_from_db(city_lis,final_res)
+        result_visualization_from_db(fin_lis,final_res)
     else:
         matrix_entry()
         
@@ -90,8 +117,12 @@ def matrix_copy_to_local():
     for i in range(5):
         city_mat.append([])
         for j in range(5):
-            city_mat[i].append(int(e[k].get()))
-            k+=1
+            if i==j:
+                city_mat[i].append(0)
+                k+=1
+            else:
+                city_mat[i].append(int(e[k].get()))
+                k+=1
     TSP(city_mat)
             
 
@@ -194,40 +225,65 @@ def TSP(city_mat):
  
 def result_visualization(path,city,final_res):
     top=Tk()
+    top.title("RESULT")
+    top.geometry("1400x700+0+0")
+    Top = Frame(top, bd=2)
+    Top.pack(side=TOP)
+    Form = Frame(top)
+    Form.pack(side=TOP)
+    lbl_title = Label(Top, text = "The shortest path available by visiting each city exactly once and return to the starting city is", font=(15))
+    lbl_title.pack(fill=X)
     j=0
     for i in range(6):
         if(i==5):
-            l[i]=Label(top,text=str(city[path[j]-1]))
+            l[i]=Label(Form,text=str(city[path[j]-1]), font=(15))
             l[i].grid(row=7,column=8+i)
         else:
-            l[i]=Label(top,text=str(city[path[j]-1])+"-------->")
+            l[i]=Label(Form,text=str(city[path[j]-1])+"-------->", font=(15))
             l[i].grid(row=7,column=8+i)
         j=j+1
 
-    l1=Label(top,text="Total distance of the path = "+ str(final_res))
+    l1=Label(Form,text="Total distance of the path = "+ str(final_res), font=(15))
     l1.grid(row=9)
+    lbl_text = Label(Form)
+    lbl_text.grid(row=2, columnspan=2)
     top.mainloop()
     
 def result_visualization_from_db(city_lis,final_res):
     top=Tk()
+    top.geometry("1400x700+0+0")
+    top.title("RESULT")
+    Top = Frame(top, bd=2)
+    Top.pack(side=TOP)
+    Form = Frame(top)
+    Form.pack(side=TOP)
+    lbl_title = Label(Top, text = "The shortest path available by visiting each city exactly once and return to the starting city is", font=(15))
+    lbl_title.pack(fill=X)
     j=0
     for i in range(6):
         if(i==5):
-            l[i]=Label(top,text=str(city_lis[0]))
+            l[i]=Label(Form,text=str(city_lis[0]), font=(15))
             l[i].grid(row=7,column=8+i)
         else:
-            l[i]=Label(top,text=str(city_lis[j])+"-------->")
+            l[i]=Label(Form,text=str(city_lis[j])+"-------->", font=(15))
             l[i].grid(row=7,column=8+i)
         j=j+1
 
-    l1=Label(top,text="Total distance of the path = "+ str(final_res))
+    l1=Label(Form,text="Total distance of the path = "+ str(final_res), font=(15))
     l1.grid(row=9)
+    lbl_text = Label(Form)
+    lbl_text.grid(row=2, columnspan=2)
     top.mainloop()
     
 #login_module__________________________________________________________________________________________________________________________
 
 root = Tk()
-root.title("Python: PROJECT")
+root.title("LOGIN")
+root.geometry("1400x700+0+0")
+#canvas = Canvas(root,width = 1400, height = 700)
+#canvas.pack(expand = NO)
+#img = PhotoImage(file = 'dnd.png')
+#canvas.create_image(0, 0, image = img, anchor = NW)
 USERNAME = StringVar()
 PASSWORD = StringVar()
  
@@ -249,36 +305,35 @@ username = Entry(Form, textvariable=USERNAME, font=(14))
 username.grid(row=0, column=1)
 password = Entry(Form, textvariable=PASSWORD, show="*", font=(14))
 password.grid(row=1, column=1)
+
+flag=0
 def Database():
-    global conn, cursor
+    global conn, cursor,flag
     conn = sqlite3.connect("project.db")
     cursor = conn.cursor()
     
     try:
         cursor.execute("CREATE TABLE member (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
-    except:
-        cursor.execute("DROP TABLE member")
-        cursor.execute("CREATE TABLE member (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
-        
-    cursor.execute("SELECT * FROM member WHERE `username` = 'admin' AND `password` = 'admin'")
-    if cursor.fetchone() is None:
         cursor.execute("INSERT INTO member (username, password) VALUES('admin', 'admin')")
-        conn.commit()
+    except:
+        cursor.execute("SELECT * FROM member WHERE username = ? AND password = ?", (USERNAME.get(), PASSWORD.get()))
+        if cursor.fetchone() is not None:
+            flag=1
+    conn.commit()
 def HomeWindow():
     global Home
     root.withdraw()
-    Home = Toplevel()
-    lbl_home = Label(Home, text="Successfully Login!", font=(20)).pack()
     city_entry()
     
     
 def Login():
-    Database()
+        
     if USERNAME.get() == "" or PASSWORD.get() == "":
         lbl_text.config(text="Please complete the required field!", fg="red")
     else:
-        cursor.execute("SELECT * FROM member WHERE username = ? AND password = ?", (USERNAME.get(), PASSWORD.get()))
-        if cursor.fetchone() is not None:
+        Database()
+        if flag==1:
+            lbl_home = Label(root, text="Successfully Login!", font=(20)).pack()
             HomeWindow()
             USERNAME.set("")
             PASSWORD.set("")
