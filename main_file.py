@@ -32,56 +32,60 @@ def database_entry(path,city,dist):
 
 def matrix_entry():
     
-    top=Tk()
+    top=Toplevel()
     top.geometry("1400x700+0+0")
     top.title("CITY MATRIX")
-    Top = Frame(top, bd=2)
-    Top.pack(side=TOP)
-    Form = Frame(top)
-    Form.pack(side=TOP)
-    lbl_title = Label(Top, text = "ENTER THE PATH DISTANCE BETWEEN THE CITIES", font=(15))
-    lbl_title.pack(fill=X)
+    image1 =PhotoImage(file="rd.png")
+    w = image1.width()
+    h = image1.height()
+    panel1 = Label(top, image=image1)
+    panel1.pack(side='top', fill='both', expand='yes')
+    lbl_title = Label(panel1, text = "ENTER THE PATH DISTANCE BETWEEN THE CITIES", font=(15),bg='khaki')
+    lbl_title.place(x=480,y=50)
     for i in range(5):
-        l[i]=Label(Form,text=city[i], font=(15))
-        l[i].grid(row=0,column=i+1)
+        l[i]=Label(panel1,text=city[i], font=(15),bg='khaki')
+        l[i].place(x=370+i*150,y=125)
     
     k=0
     for i in range(5):
-        l[i]=Label(Form,text=city[i], font=(15))
-        l[i].grid(row=i+1)
+        l[i]=Label(panel1,text=city[i], font=(15),bg='khaki')
+        l[i].place(x=260,y=150+i*30)
         for j in range(5):
             if i==j:
-                e[k]=Entry(Form,bd=5,state='disabled')
-                e[k].grid(row=i+1,column=j+1)
+                e[k]=Entry(panel1,bd=5,state='disabled',bg='khaki')
+                e[k].place(x=350+i*150,y=150+j*30)
                 k+=1
             else:
-                e[k]=Entry(Form,bd=5)
-                e[k].grid(row=i+1,column=j+1)
+                e[k]=Entry(panel1,bd=5,bg='khaki')
+                e[k].place(x=350+i*150,y=150+j*30)
                 k+=1
-    b=Button(Form,text="CALCULATE",command=matrix_copy_to_local, font=(15))
-    b.grid(row=6)
-    lbl_text = Label(Form)
-    lbl_text.grid(row=2, columnspan=2)
+    b=Button(panel1,text="CALCULATE",command=matrix_copy_to_local, font=(15),bg='khaki')
+    b.place(x=610,y=350)
+    
     top.mainloop()  
 def city_entry():
-    top=Tk()
-    top.title("CITY ENTRY")
+    top=Toplevel()
     top.geometry("1400x700+0+0")
-    Top = Frame(top, bd=2)
-    Top.pack(side=TOP)
-    Form = Frame(top)
-    Form.pack(side=TOP)
-    lbl_title = Label(Top, text = "ENTER THE FIVE CITIES", font=(15))
-    lbl_title.pack(fill=X)
+    image1 =PhotoImage(file="rd.png")
+    w = image1.width()
+    h = image1.height()
+
+ 
+    panel1 = Label(top, image=image1)
+    panel1.pack(side='top', fill='both', expand='yes')
+
+
+    top.title("CITY ENTRY")
+    lbl_title = Label(panel1, text = "ENTER THE FIVE CITIES", font=(15))
+    lbl_title.place(x=530,y=50)
     for i in range(5):
-        l[i]=Label(Form,text="CITY"+str(i+1), font=(15))
-        l[i].grid(row=i,column=15)
-        c[i]=Entry(Form,bd=5)
-        c[i].grid(row=i,column=16)
-    b=Button(Form,text="SUBMIT",command=copy_city_to_local, font=(15))
-    b.grid(row=5,column=15)
-    lbl_text = Label(Form)
-    lbl_text.grid(row=2, columnspan=2)
+        l[i]=Label(panel1,text="CITY"+str(i+1), font=(15))
+        l[i].place(x=550,y=100+i*50)
+        c[i]=Entry(panel1,bd=5)
+        c[i].place(x=600,y=100+i*50)
+    b=Button(panel1,text="SUBMIT",command=copy_city_to_local, font=(15))
+    b.place(x=560,y=350)
+    panel1.image = image1
     top.mainloop()
 def search_in_database(city):
     final_res=0
@@ -224,55 +228,57 @@ def TSP(city_mat):
 
  
 def result_visualization(path,city,final_res):
-    top=Tk()
+    top=Toplevel()
     top.title("RESULT")
     top.geometry("1400x700+0+0")
-    Top = Frame(top, bd=2)
-    Top.pack(side=TOP)
-    Form = Frame(top)
-    Form.pack(side=TOP)
-    lbl_title = Label(Top, text = "The shortest path available by visiting each city exactly once and return to the starting city is", font=(15))
+    image1 =PhotoImage(file="rd.png")
+    w = image1.width()
+    h = image1.height()
+    panel1 = Label(top, image=image1)
+    panel1.pack(side='top', fill='both', expand='yes')
+    lbl_title = Label(panel1, text = "The shortest path available by visiting each city exactly once and return to the starting city is", font=(15))
     lbl_title.pack(fill=X)
     j=0
     for i in range(6):
         if(i==5):
-            l[i]=Label(Form,text=str(city[path[j]-1]), font=(15))
-            l[i].grid(row=7,column=8+i)
+            l[i]=Label(panel1,text=str(city[path[j]-1]), font=(15))
+            l[i].place(x=370+i*150,y=50)
         else:
-            l[i]=Label(Form,text=str(city[path[j]-1])+"-------->", font=(15))
-            l[i].grid(row=7,column=8+i)
+            l[i]=Label(panel1,text=str(city[path[j]-1]),font=(15))
+            l[i].place(x=370+i*150,y=50)
+            l[i]=Label(panel1,text="---->")
+            l[i].place(x=460+i*150,y=50)
         j=j+1
 
-    l1=Label(Form,text="Total distance of the path = "+ str(final_res), font=(15))
-    l1.grid(row=9)
-    lbl_text = Label(Form)
-    lbl_text.grid(row=2, columnspan=2)
+    l1=Label(panel1,text="Total distance of the path = "+ str(final_res), font=(15))
+    l1.place(x=370,y=150)
     top.mainloop()
     
 def result_visualization_from_db(city_lis,final_res):
-    top=Tk()
+    top=Toplevel()
     top.geometry("1400x700+0+0")
     top.title("RESULT")
-    Top = Frame(top, bd=2)
-    Top.pack(side=TOP)
-    Form = Frame(top)
-    Form.pack(side=TOP)
-    lbl_title = Label(Top, text = "The shortest path available by visiting each city exactly once and return to the starting city is", font=(15))
+    image1 =PhotoImage(file="rd.png")
+    w = image1.width()
+    h = image1.height()
+    panel1 = Label(top, image=image1)
+    panel1.pack(side='top', fill='both', expand='yes')
+    lbl_title = Label(panel1, text = "The shortest path available by visiting each city exactly once and return to the starting city is", font=(15))
     lbl_title.pack(fill=X)
     j=0
     for i in range(6):
         if(i==5):
-            l[i]=Label(Form,text=str(city_lis[0]), font=(15))
-            l[i].grid(row=7,column=8+i)
+            l[i]=Label(panel1,text=str(city_lis[0]), font=(15))
+            l[i].place(x=370+i*150,y=50)
         else:
-            l[i]=Label(Form,text=str(city_lis[j])+"-------->", font=(15))
-            l[i].grid(row=7,column=8+i)
+            l[i]=Label(panel1,text=str(city_lis[j]),font=(15))
+            l[i].place(x=370+i*150,y=50)
+            l[i]=Label(panel1,text="---->")
+            l[i].place(x=460+i*150,y=50)
         j=j+1
 
-    l1=Label(Form,text="Total distance of the path = "+ str(final_res), font=(15))
-    l1.grid(row=9)
-    lbl_text = Label(Form)
-    lbl_text.grid(row=2, columnspan=2)
+    l1=Label(panel1,text="Total distance of the path = "+ str(final_res), font=(15))
+    l1.place(x=370,y=150)
     top.mainloop()
     
 #login_module__________________________________________________________________________________________________________________________
@@ -280,10 +286,8 @@ def result_visualization_from_db(city_lis,final_res):
 root = Tk()
 root.title("LOGIN")
 root.geometry("1400x700+0+0")
-#canvas = Canvas(root,width = 1400, height = 700)
-#canvas.pack(expand = NO)
-#img = PhotoImage(file = 'dnd.png')
-#canvas.create_image(0, 0, image = img, anchor = NW)
+img = PhotoImage(file = 'login.png')
+
 USERNAME = StringVar()
 PASSWORD = StringVar()
  
@@ -291,9 +295,10 @@ Top = Frame(root, bd=2)
 Top.pack(side=TOP)
 Form = Frame(root)
 Form.pack(side=TOP)
- 
 lbl_title = Label(Top, text = "LOGIN", font=(15))
-lbl_title.pack(fill=X)
+lbl_title.pack()
+label1 = Label(Top, image=img,justify=CENTER, height=300, fg="blue")
+label1.pack() 
 lbl_username = Label(Form, text = "Username:", font=(14), bd=15)
 lbl_username.grid(row=0, sticky="e")
 lbl_password = Label(Form, text = "Password:", font=(14), bd=15)
