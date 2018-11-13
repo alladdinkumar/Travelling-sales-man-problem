@@ -80,7 +80,7 @@ def city_entry():
     lbl_title.place(x=530,y=50)
     for i in range(5):
         l[i]=Label(panel1,text="CITY"+str(i+1), font=(15))
-        l[i].place(x=550,y=100+i*50)
+        l[i].place(x=530,y=100+i*50)
         c[i]=Entry(panel1,bd=5)
         c[i].place(x=600,y=100+i*50)
     b=Button(panel1,text="SUBMIT",command=copy_city_to_local, font=(15))
@@ -247,7 +247,7 @@ def result_visualization(path,city,final_res):
             l[i]=Label(panel1,text=str(city[path[j]-1]),font=(15))
             l[i].place(x=370+i*150,y=50)
             l[i]=Label(panel1,text="---->")
-            l[i].place(x=460+i*150,y=50)
+            l[i].place(x=475+i*150,y=50)
         j=j+1
 
     l1=Label(panel1,text="Total distance of the path = "+ str(final_res), font=(15))
@@ -274,7 +274,7 @@ def result_visualization_from_db(city_lis,final_res):
             l[i]=Label(panel1,text=str(city_lis[j]),font=(15))
             l[i].place(x=370+i*150,y=50)
             l[i]=Label(panel1,text="---->")
-            l[i].place(x=460+i*150,y=50)
+            l[i].place(x=475+i*150,y=50)
         j=j+1
 
     l1=Label(panel1,text="Total distance of the path = "+ str(final_res), font=(15))
